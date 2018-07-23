@@ -1,7 +1,16 @@
 <?php
-include 'session.php';
-$errors = array();
+  include 'session.php';
 
+  $msgs = array();
+  $warns = array();
+  $errors = array();
+
+    if(isset($_COOKIE['resultsetProfile'])){
+      $editProfileCookie =  unserialize($_COOKIE['resultsetProfile']);
+    }else{
+      $_SESSION['msgs'] = "it seems you have disable cookie from your browser some freatures might not work properly.";
+      header('location: profile.php');
+    }
     if(isset($_POST['upload'])) {
     if (($_FILES['my_file']['name']!="")) {
     // Where the file is going to be stored
@@ -17,7 +26,7 @@ $errors = array();
                $temp_name = $_FILES['my_file']['tmp_name'];
                $path_filename_ext = $target_dir.$my_name.".".$ext;
               if(mysqli_num_rows($result) == 1){
-               $q = mysqli_query($conn ,"update user set img = '$my_name.$ext' where mobile = '$mobile'");
+               $q = mysqli_query($conn ,"update user set img = '$my_name.$ext' where userId = '$userID'");
                mysqli_query($conn,$q);
                move_uploaded_file($temp_name,$path_filename_ext);
                header('location:editProfile.php');
@@ -28,17 +37,17 @@ $errors = array();
   }
   if(isset($_POST['default'])) {
     if(mysqli_num_rows($result) == 1){
-     $q = mysqli_query($conn ,"select gender from user where mobile = '$mobile'");
+     $q = mysqli_query($conn ,"select gender from user where userID = '$userID' ");
      $q = mysqli_fetch_row($q);
      $img = $q[0].'.png'; 
-     $q = mysqli_query($conn ,"update user set img = '$img' where mobile = '$mobile'");
+     $q = mysqli_query($conn ,"update user set img = '$img' where userID = '$userID'");
      mysqli_query($conn,$q);
      header('location:editProfile.php');
    }
   }
 
 
-if(isset($_POST['editProfile'])) {
+if(isset($_POST['update'])) {
   $fname = $_POST['fname'];
   $lname = $_POST['lname'];
   $email = $_POST['email'];
@@ -50,18 +59,10 @@ if(isset($_POST['editProfile'])) {
       array_push($errors,"Invalid email id");
   }
   if(count($errors) == 0 ){
-    if(mysqli_num_rows($result) == 1){
-      $q = mysqli_query($conn ,"update user set fname = '$fname' where mobile = '$mobile'");
-      mysqli_query($conn,$q);
-      $q = mysqli_query($conn ,"update user set lname = '$lname' where mobile = '$mobile'");
-      mysqli_query($conn,$q);
-      $q = mysqli_query($conn ,"update user set email = '$email' where mobile = '$mobile'");
-      mysqli_query($conn,$q);
-      $q = mysqli_query($conn ,"update user set dob = '$dob' where mobile = '$mobile'");
-      mysqli_query($conn,$q);
-      $_SESSION['msg']="Profile Update sucessfully";
-      unset($_SESSION['edituser']);
-      header('location:profile.php');
+    if(isset($_SESSION['ui'])){
+      $updateQuery = mysqli_query($conn ,"UPDATE user SET fname = '$fname' , lname = '$lname' , email = '$email' , dob = '$dob'  where userID = '$userID'");
+        $_SESSION['msgs']="Profile update sucessfully";
+        header('location:profile.php');
     } else {
         array_push($errors,"something went wrong / please login again");
     }
@@ -69,108 +70,81 @@ if(isset($_POST['editProfile'])) {
 }  
 ?>
 
-<html>
-
-  <head>
-
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
   
-  <link rel="stylesheet" type="text/css" href="css/manu.css">
-  <link rel="stylesheet" type="text/css" href="css/default.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <title>Edit Profile</title>
 
- </head>
+  <?php include 'link.php'; ?>
 
- <body>
+</head>
+<body>
+  
+<?php include 'navlog.php'; ?>
 
-  <script type="text/javascript">
-  $(function(){
-    $(".dropdown").hover(            
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      },
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      });
-  });  
-</script>
-
-<nav class="navbar navbar-expand-sm bg-info navbar-dark">
-  <a id="logo" class="navbar-brand" href="home.php">Auction</a>
-  <form id="f1" class="form-inline" action="/action_page.php" method="POST">
-    <input id="inp1" class="form-control mr-sm-2" type="text" placeholder="Search product,brand or more" size="70">
-    <button id="btn1" class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
-  </form>
-  <ul class="navbar-nav">
-    <li style="margin-left: 88px;" class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        <?php echo $_SESSION['us']; ?>
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="profile.php">Profile</a>
-        <a class="dropdown-item" href="auctions.php">Auctions</a>
-        <a class="dropdown-item" href="orders.php">Orders</a>
-        <a class="dropdown-item" href="wishlist.php">Wishlist</a>
-        <a class="dropdown-item" href="logout.php">logout</a>
-      </div>
-    </li>
-
-    <li class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        More
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="help.php">24*7 help</a>
-        <a class="dropdown-item" href="about.php">About</a>
-        <a class="dropdown-item" href="advertice.php">Advertice</a>
-      </div>
-    </li>
-  </ul>
-</nav>
-
-   <div>
-  <div class = "header">
-     <h3 style="color: white;"> Edit </h3>
-  </div>
-  <form id="pform" class="content" action="editProfile.php" method="POST" enctype="multipart/form-data">
-    <div> 
-      <?php include 'errors.php'; ?>
-    </div>
-    <div class = "input-group">
-         <label> First Name: </label>
-         <input type="text" name="fname" value="<?php echo $_SESSION['edituser'][1]; ?>">
-    </div>
-    <div class = "input-group">
-         <label> Last Name: </label>  
-        <input type="text" name="lname" value="<?php echo $_SESSION['edituser'][2]; ?>">
-    </div>
-    <div class = "input-group">
-         <label> E-mail: </label>  
-         <input type="text" name="email" value="<?php echo $_SESSION['edituser'][3]; ?>">
-    </div>
-    <div class = "input-group">
-          <label> DOB: </label> 
-          <input type="date" name="dob" value="<?php echo $_SESSION['edituser'][5]; ?>">
-    </div>
+  <div style="max-width: 800px;" class="container">
     <div>
-      <label > Profile Picture: </label>
-      <input type="file" name="my_file" style="margin-bottom: 10px;" />
-      <input class="pbtn" type="submit" name="upload" value="Upload"/>
-      <input class="pbtn" type="submit" name="default" value="Default Profile Picture"/>
+       <h3 style="border-radius: .25rem .25rem 0rem 0rem; margin-top: 80px; margin-bottom: 0px; background-color: #6c757d; text-align: center; color: white;">Online Auction</h3>
     </div>
-      <input class="pbtn" type="button" name="button" value="Change Password" onclick="window.location.href='change_pass.php'">
-     <input class = "pbtn" type="submit" name="editProfile" value="Update Profile">
-   </form>
-   </div>
- </body>
+    <div style="margin-bottom: 20px; padding-top: 15px; padding-bottom: 15px; box-shadow: 0px 2px 3px 1px #e1e2e3; border-radius: 0rem 0rem .25rem .25rem;" class="container card">
+      <!-- inlclude msg,warn,err --> 
+      <?php include 'msgs.php'; include 'errors.php'; include 'warnings.php'; ?>
+      <form class="content" action="editProfile.php" method="POST" enctype="multipart/form-data">
+
+        <div style="padding-bottom: 15px;" class="container">
+          <img class="rounded-circle" width="200" height="200" style="margin-left: auto; margin-right: auto; border: 1px solid #17a2b8; display: block;" alt="Your Profile" src = <?php echo "profileIMG/$editProfileCookie[8]"; ?> >
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span style="width: 135px;" class="input-group-text">First Name</span>
+          </div>
+          <input style="background-color: white;" type="text" class="form-control"  name="fname" value="<?php echo $editProfileCookie[1]; ?>">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span style="width: 135px;" class="input-group-text">Last Name</span>
+          </div>
+          <input style="background-color: white;" type="text" class="form-control"  name="lname" value="<?php echo $editProfileCookie[2]; ?>">
+        </div>
+         
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span style="width: 135px;" class="input-group-text">E-mail</span>
+          </div>
+          <input style="background-color: white;" type="text" class="form-control"  name="email" value="<?php echo $editProfileCookie[3]; ?>">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span style="width: 135px;" class="input-group-text">Mobile Number</span>
+          </div>
+        <input style="background-color: white;" type="text" class="form-control"  name="mobile" value="<?php echo $editProfileCookie[4]; ?>">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span style="width: 135px;" class="input-group-text">Date Of Birth</span>
+          </div>
+          <input style="background-color: white;" type="date" class="form-control"  name="dob" value="<?php echo $editProfileCookie[5]; ?>">
+        </div>
+
+        <div style="text-align: center;">
+          <input style="width: 45%" class="btn btn-secondary" type="button" name="change_pass" value="Change Password" onclick="window.location.href='change_pass.php'">
+            <button style="width: 45%;" type="submit" class="btn btn-secondary" name="update" value="Update">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div>
+    <label > Profile Picture: </label>
+    <input type="file" name="my_file" style="margin-bottom: 10px;" />
+    <input class="pbtn" type="submit" name="upload" value="Upload"/>
+    <input class="pbtn" type="submit" name="default" value="Default Profile Picture"/>
+  </div>
+<?php include 'footer.php'; ?>
+
+</body>
 </html>

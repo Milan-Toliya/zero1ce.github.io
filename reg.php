@@ -6,69 +6,22 @@
 	$dob="";
 	$lname="";
 	$email="";
-	$errors = array();
+	$msgs = array();
+  	$warns = array();
+  	$errors = array();
 ?>
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-
-	<title>Registration in online Auction</title>
-	  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <link rel="stylesheet" type="text/css" href="css/manu.css">
-  <link rel="stylesheet" type="text/css" href="css/default.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <title>Register Page</title>
+
+  
+  <?php include 'link.php'; ?>
 
 </head>
-
 <body>
-
-	<script type="text/javascript">
-  $(function(){
-    $(".dropdown").hover(            
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      },
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      });
-  });  
-</script>
-<nav class="navbar navbar-expand-sm bg-info navbar-dark">
-  <a id="logo" class="navbar-brand" href="index.php">Auction</a>
-  <form id="f1" class="form-inline" action="/action_page.php" method="POST">
-    <input id="inp1" class="form-control mr-sm-2" type="text" placeholder="Search product,brand or more" size="70">
-    <button id="btn1" class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
-  </form>
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a id="reglog" class="nav-link" href="reglog.php">Login & Signup</a>
-    </li>
-
-    <li class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        More
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="help.php"> 24*7 help</a>
-        <a class="dropdown-item" href="about.php">About</a>
-        <a class="dropdown-item" href="advertice.php">Advertice</a>
-      </div>
-    </li>
-  </ul>
-</nav>
-
-<?php
+	<?php
 	if(isset($_POST['register'])) {
 		include 'conn.php';
 		$userID = uniqid('UID');
@@ -108,74 +61,111 @@
 				header('Location: log.php');
 			}
 		}
-		
 	}
 ?>
 
-	<div>
-		<div class="header">
-			<h3 style="color: white;">Registarion</h3>	
-		</div>
-		<form id="pform" class="content" action="" method="POST">
-			<?php include('errors.php'); ?>
-			<div class="input-group">
-				<label> <sup style="color: red;">*</sup> First Name: </label>
-				<input type="text" name="fname" placeholder="First Name" value = "<?php echo $fname; ?>"> 
-			</div>
-			<div class="input-group">
-				<label> <sup style="color: red;">*</sup> Last Name: </label>
-				<input type="text" name="lname" placeholder="Last Name" value = "<?php echo $lname; ?>">
-			</div>
+  <?php include 'nav.php'; ?>
 
-			<div>
-				<label> Gender: </label>
-				<input style="margin-left: 10px;" type="radio" name="gender" value = "m" checked="checked"> Male
-				<input style="margin-left: 10px;" type="radio" name="gender" value = "f"> Female
-			</div>
+<div style="max-width: 800px;" class="container">
+        <div>
+           <h3 style="border-radius: .25rem .25rem 0rem 0rem; margin-top: 80px; margin-bottom: 0px; background-color: #6c757d; text-align: center; color: white;">Registarion</h3>
+        </div>
+       <div style="margin-bottom: 20px; padding-top: 15px; padding-bottom: 15px; border: solid 1px #e1e2e3; box-shadow: 0px 2px 3px 1px #e1e2e3; border-radius: 0rem 0rem .25rem .25rem;" class="container card">
+       	<form class="content" action="" method="POST">
+       		 <?php include 'msgs.php';include 'errors.php'; ?>
 
-			<div class="input-group">
-				<label> <sup style="color: red;">*</sup> Mobile Number: </label>
-				<input type="text" name="mobile" placeholder="Mobile number" value = "<?php echo $mobile; ?>">
-			</div>
-			<div class="input-group">
-				<label> E-mail: </label>
-				<input type="text" name="email" placeholder="optional" value = "<?php echo $email; ?>">
-			</div>
-			<div class="input-group">
-				<label> DOB: </label>
-				<input type="date" name="dob" value = "<?php echo $dob; ?>">
-			</div>
-			<div class="input-group">
-				<label> <sup style="color: red;">*</sup> Password: </label>
-				<input type="password" name="password1" placeholder="Create Password">
-			</div>
-			<div class="input-group">
-				<label> Confirm Password: </label>
-				<input type="password" id="pwd" name="password2" placeholder="Confirm Password" >
-			</div>
-			<div>
-				<label style="text-align:left; margin: auto;">Show password</label>
-				<input style="height: auto; width:auto; padding: auto; border-radius: auto;" type="checkbox" onclick="showpwd();">
+       		 <div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	    	        <span class="input-group-text" style="width: 115px;"><sup style="color: red;">*</sup> First Name</span>
+	            </div>
+	            <input type="text" class="form-control" placeholder="First Name"  name="fname" value="<?php echo $fname; ?>" >
+	         </div>
 
-				<script>
-					function showpwd(){
-						var x = document.getElementById("pwd");
-						if(x.type === "password") {
-							x.type = "text";
-						}
-						else {
-							x.type = "password";
-						}
-					}
-				</script>
-			</div>
-			<div>
-				<input class="pbtn" type="submit" name="register" value="Register">
-				<a style="text-decoration: none; text-align: right;" href="log.php"> You have already register? </a>
-			</div>
+       		 <div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	    	        <span class="input-group-text" style="width: 115px;"><sup style="color: red;">*</sup> Last Name</span>
+	            </div>
+	            <input type="text" class="form-control" placeholder="Last Name"  name="lname" value="<?php echo $lname; ?>" >
+	         </div>	         
+
+       		 <div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	    	        <span class="input-group-text" style="width: 115px;">Gender </span>
+	            </div>
+			  <select class="form-control" name="gender">
+			    <option value="m">Male</option>
+			    <option value="f">Female</option>
+			  </select>
+	         </div>
+
+			 <div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	    	        <span class="input-group-text" style="width: 115px;"><sup style="color: red;">*</sup> Mobile </span>
+	            </div>
+	            <input type="text" class="form-control" placeholder="Mobile Number"  name="mobile" value="<?php echo $mobile; ?>" >
+	         </div>	    
+
+			 <div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	    	        <span class="input-group-text" style="width: 115px;"> E-mail </span>
+	            </div>
+	            <input type="text" class="form-control" placeholder="Email Address"  name="email" value="<?php echo $email; ?>" >
+	         </div>	    
+
+			 <div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	    	        <span class="input-group-text" style="width: 115px;"> DOB </span>
+	            </div>
+	            <input type="date" class="form-control" placeholder="Date of Birth"  name="dob" value="<?php echo $dob; ?>" >
+	         </div>	    
+
+
+			 <div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	    	        <span class="input-group-text" style="width: 115px;"> Password </span>
+	            </div>
+	            <input type="password" class="form-control" placeholder="password"  name="password1" >
+	         </div>	    
+
+			<div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	    	        <span class="input-group-text" style="width: 115px;"> Confirm Pass. </span>
+    	         	<div  class="input-group" id="show_hide_password">
+				      <input size="100" class="form-control" name="password2" placeholder="Confirm Password" type="password">
+				      <span class="input-group-text">
+				        <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+				      </span>
+				    </div>
+	    	    </div>
+	        </div>
+				
+			<script type="text/javascript">
+				$(document).ready(function() {
+			    $("#show_hide_password a").on('click', function(event) {
+			        event.preventDefault();
+			        if($('#show_hide_password input').attr("type") == "text"){
+			            $('#show_hide_password input').attr('type', 'password');
+			            $('#show_hide_password i').addClass( "fa-eye-slash" );
+			            $('#show_hide_password i').removeClass( "fa-eye" );
+			        }else if($('#show_hide_password input').attr("type") == "password"){
+			            $('#show_hide_password input').attr('type', 'text');
+			            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+			            $('#show_hide_password i').addClass( "fa-eye" );
+			        }
+			    });
+			});
+			</script>
+
+	        <div>
+            <button style="width: 100%;" type="submit" class="btn btn-secondary" name="register" value="Register">Register</button>
+    		<a style="text-decoration: none; text-align: right;" href="log.php"> You have already register? </a>
+	        </div>
 		</form>
-	</div>
-	
-</body>
+    </div>
+</div>
 
-</html>
+	
+   <?php include 'footer.php'; ?>
+
+  </body>
+  </html>

@@ -1,111 +1,98 @@
 <?php
-  include 'session.php';   
+  include 'session.php';
+  //include 'conn.php';
+  //session_start();
+
+  $msgs = array();
+  $warns = array();
   $errors = array();
+
+  if(isset($_POST['editProfile'])) {
+    header('location: editProfile.php');
+  }
+
   if(isset($_POST['delete'])) {
-    $password = $_POST['pass'];
+    $password = $_POST['password'];
     $password = md5($password);
-    $mobile = $_SESSION['ms'];
-    $ps = $_SESSION['ps'];
+
+    $selectQuery = mysqli_query($conn , "SELECT password FROM user WHERE userID = '$userID'");
+    $passwordDB = mysqli_fetch_row($selectQuery);
+
     if($password != "") {
-      if($password == $ps) {
-        $q = "delete from user WHERE mobile = '$mobile'";
-        $result = mysqli_query($conn , $q);
+      if($password == $passwordDB) {
+        $deleteQuery = "DELETE FROM user WHERE userID = '$userID'";
+        $result = mysqli_query($conn , $deleteQuery);
         if($result == 1) {
           header('Location:index.php');
         }
       } else { array_push($errors,"Wrong Password");}
     } else { array_push($errors,"Password is empty");}
+  }
+  if(isset($_POST['logout'])) {
+    unset($_SESSION['ui']);
+    header('location: index.php');
   } 
 ?>
 
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-
-  <title> Delete Account </title>
-   <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <link rel="stylesheet" type="text/css" href="css/manu.css">
-  <link rel="stylesheet" type="text/css" href="css/default.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <title>Delete Account</title>
+
+  <?php include 'link.php'; ?>
 
 </head>
-
 <body>
 
-  <script type="text/javascript">
-  $(function(){
-    $(".dropdown").hover(            
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      },
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
+  <?php include 'navlog.php'; ?>
+
+    <div style="max-width: 800px;" class="container">
+        <div>
+           <h3 style="border-radius: .25rem .25rem 0rem 0rem; margin-top: 80px; margin-bottom: 0px; background-color: #6c757d; text-align: center; color: white;">Online Auction</h3>
+        </div>
+       <div style="margin-bottom: 20px; padding-top: 15px; padding-bottom: 15px; box-shadow: 0px 2px 3px 1px #e1e2e3; border-radius: 0rem 0rem .25rem .25rem;" class="container card">
+        <!-- inlclude msg,warn,err --> 
+          <?php include 'msgs.php'; include 'errors.php'; include 'warnings.php'; ?>
+      <form class="content" action="delete.php" method="POST">
+
+        <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                <div  class="input-group" id="show_hide_password">
+              <input size="100" class="form-control" name="password" placeholder="Confirm Password" type="password">
+                <span class="input-group-text">
+                  <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                </span>
+            </div>
+            </div>
+          </div>
+        
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $("#show_hide_password a").on('click', function(event) {
+              event.preventDefault();
+              if($('#show_hide_password input').attr("type") == "text"){
+                  $('#show_hide_password input').attr('type', 'password');
+                  $('#show_hide_password i').addClass( "fa-eye-slash" );
+                  $('#show_hide_password i').removeClass( "fa-eye" );
+              }else if($('#show_hide_password input').attr("type") == "password"){
+                  $('#show_hide_password input').attr('type', 'text');
+                  $('#show_hide_password i').removeClass( "fa-eye-slash" );
+                  $('#show_hide_password i').addClass( "fa-eye" );
+              }
+          });
       });
-  });  
-</script>
+      </script>
 
-<nav class="navbar navbar-expand-sm bg-info navbar-dark">
-  <a id="logo" class="navbar-brand" href="home.php">Auction</a>
-  <form id="f1" class="form-inline" action="/action_page.php" method="POST">
-    <input id="inp1" class="form-control mr-sm-2" type="text" placeholder="Search product,brand or more" size="70">
-    <button id="btn1" class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
-  </form>
-  <ul class="navbar-nav">
-    <li style="margin-left: 88px;" class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        <?php echo $_SESSION['us']; ?>
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="profile.php">Profile</a>
-        <a class="dropdown-item" href="auctions.php">Auctions</a>
-        <a class="dropdown-item" href="orders.php">Orders</a>
-        <a class="dropdown-item" href="wishlist.php">Wishlist</a>
-        <a class="dropdown-item" href="logout.php">logout</a>
-      </div>
-    </li>
-
-    <li class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        More
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="help.php">24*7 help</a>
-        <a class="dropdown-item" href="about.php">About</a>
-        <a class="dropdown-item" href="advertice.php">Advertice</a>
-      </div>
-    </li>
-  </ul>
-</nav>
-
-
-  <div>
-  	<div class="header">
-  		<h3> Delete Account</h3>
-  	</div>
-    <form id='pform' action ="delete.php" method="POST">
-    	<?php
-    		include 'errors.php';
-    	?>
-    	<div class="input-group">
-    		<label>Confirm your password :</label>
-    		<input type="password" name="pass" placeholder="password">	 	
-    	</div>
-    	<div>
-    		<input class="pbtn" type="submit" name="delete" value="Delete Account">		
-    	</div>
-    
+    		<div>
+            <button style="width: 100%;" type="submit" class="btn btn-secondary" name="delete" value="Delete Account">Delete Account</button>
+        </div>		
     </form>  
   </div>
- </body>
-</html>
+</div>
+
+  <?php include 'footer.php'; ?>
+
+  </body>
+  </html>

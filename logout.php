@@ -1,6 +1,6 @@
-<?php
+<?php	
 	session_start();
-    unset($_SESSION['ms']);
-    unset($_SESSION['ps']);
+    unset($_SESSION['ui']);
+    unset($_SESSION['us']);
     header('location: index.php');
  ?> 

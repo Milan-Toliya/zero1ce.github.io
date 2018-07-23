@@ -1,10 +1,26 @@
 <?php
-	$errors = array();
+session_start();
+	
+  $msgs = array();
+  $warns = array();
+  $errors = array();
+
+  //   if (isset($_SESSION['warns'])) {
+  //   array_push($warns, $_SESSION['warns']);
+  //   unset($_SESSION['warns']);
+  // }
+  //   if (isset($_SESSION['msgs'])) {
+  //   array_push($msgs, $_SESSION['msgs']);
+  //   unset($_SESSION['msgs']);
+  // }
+  //   if (isset($_SESSION['errors'])) {
+  //   array_push($errors, $_SESSION['errors']);
+  //   unset($_SESSION['errors']);
+  // }
+  
 	if(isset($_POST['reglog'])) {
 		include 'conn.php';
-		session_start();
 		$mobile = $_POST['mobile'];
-		$_SESSION['ms'] = $mobile;
 		if(empty($mobile)){
 			array_push($errors , "Mobile Number is Empty");
 		}
@@ -23,77 +39,41 @@
 		}
 	}
 ?>
-<html>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  
+  <title>Login & Signup</title>
 
-	<title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/manu.css">
-	  <link rel="stylesheet" type="text/css" href="css/default.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <?php include 'link.php'; ?>
 
 </head>
-
 <body>
 
-	<script type="text/javascript">
-  $(function(){
-    $(".dropdown").hover(            
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      },
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      });
-  });  
-</script>
+  <?php include 'nav.php'; ?>
+  	<div style="max-width: 800px;" class="container">
+        <div>
+           <h3 style="border-radius: .25rem .25rem 0rem 0rem; margin-top: 80px; margin-bottom: 0px; background-color: #6c757d; text-align: center; color: white;">Online Auction</h3>
+        </div>
+       <div style="margin-bottom: 20px; padding-top: 15px; padding-bottom: 15px; box-shadow: 0px 2px 3px 1px #e1e2e3; border-radius: 0rem 0rem .25rem .25rem;" class="container card">
+				<!-- inlclude msg,warn,err --> 
+	        <?php include 'msgs.php'; include 'errors.php'; include 'warnings.php'; ?>
+			<form id="pform" class="content" action="reglog.php" method="POST">
+	          <div class="input-group mb-3">
+	            <div class="input-group-prepend">
+	              <span class="input-group-text"><i class="fa fa-mobile-phone" style="font-size:24px"></i></span>
+	            </div>
+	            <input type="text" class="form-control" placeholder="Enter Mobile Number" id="usr" name="mobile" value="">
+	          </div>
+			<div>
+	          <button style="width: 100%;" type="submit" class="btn btn-secondary" name="reglog" value="Continue">Continue</button>
+	        </div>
+			</form>
+        </div>
+    </div>
 
-<nav class="navbar navbar-expand-sm bg-info navbar-dark">
-  <a id="logo" class="navbar-brand" href="index.php">Auction</a>
-  <form id="f1" class="form-inline" action="/action_page.php" method="POST">
-    <input id="inp1" class="form-control mr-sm-2" type="text" placeholder="Search product,brand or more" size="70">
-    <button id="btn1" class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
-  </form>
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a id="reglog" class="nav-link" href="reglog.php">Login & Signup</a>
-    </li>
+  <?php include 'footer.php'; ?>
 
-    <li class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        More
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="help.php"> 24*7 help</a>
-        <a class="dropdown-item" href="about.php">About</a>
-        <a class="dropdown-item" href="advertice.php">Advertice</a>
-      </div>
-    </li>
-  </ul>
-</nav>
-	<div class="header">
-		<h3 style="color: white;">Online Auction</h3>
-	</div>
-	<form id="pform" class="content" action="reglog.php" method="POST">
-   		<?php include 'errors.php'; ?> 		
-		<div class="input-group">
-			<label> Enter Mobile: </label>
-			<input type="text" name="mobile" placeholder="Enter Mobile Number">
-		</div>
-		<div >
-			<input type="submit"  class="pbtn" name="reglog" value="Continue">	
-		</div>	
-	</form>
-</body>
-
-</html>
+  </body>
+  </html>

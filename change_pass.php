@@ -1,124 +1,107 @@
 <?php
-include 'session.php';
-$mobile = $_SESSION['ms'];
-$errors = array();
-if(isset($_POST['changepass'])) {
-	$opass = $_POST['opass'];
-	$opass= md5($opass);
-	$npass = $_POST['npass'];
-	$cpass = $_POST['cpass'];
-	$password = mysqli_query($conn,"select password from user where mobile = '$mobile'");
-	$resultset = mysqli_fetch_row($password);
-	if($resultset[0] == $opass){
-		if($npass != ''){
-			if($npass == $cpass){
-				$npass=md5($npass);
-				$q = mysqli_query($conn ,"update user set password = '$npass' where mobile = '$mobile'");
-				if ($q) {
-					$_SESSION['msg'] = "Password Changed Successfully" ;
-                    $_SESSION['ps'] = $npass;        
-					header('location:profile.php');
-				}
-			}else {	array_push($errors ,  "Confirm Password did not match"); }
-		}else {	array_push($errors , "password filed must not be empty"); }
-	}else{ array_push($errors , "old password is wrong"); }
-}
+	include 'session.php';
+	// include 'conn.php';
+	// session_start();
+
+	$msgs = array();
+	$warns = array();
+	$errors = array();
+
+	if(isset($_POST['change_pass'])) {
+		$opass = $_POST['oldPassword'];
+		$opass= md5($opass);
+		$npass = $_POST['newPassword'];
+		$cpass = $_POST['password'];
+		$password = mysqli_query($conn,"SELECT password FROM user WHERE userID = '$userID'");
+		$resultset = mysqli_fetch_row($password);
+		if($resultset[0] == $opass){
+			if($npass != ''){
+				if($npass == $cpass){
+					$npass=md5($npass);
+					$updateQuery = mysqli_query($conn ,"UPDATE user SET password = '$npass' WHERE userID = '$userID'");
+					if ($updateQuery) {
+						$_SESSION['msgs'] = "Password Changed Successfully" ;      
+						header('location:profile.php');
+					}
+				}else {	array_push($errors ,  "Confirm Password did not match"); }
+			}else {	array_push($errors , "password filed must not be empty"); }
+		}else{ array_push($errors , "old password is wrong"); }
+	}
 ?>
-<html>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  
+  <title>Change Password</title>
 
-	<title> Change password in online auction </title>
-	<title>Bootstrap Example</title>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
-    
-  	<link rel="stylesheet" type="text/css" href="css/manu.css">
-  	<link rel="stylesheet" type="text/css" href="css/default.css">
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <?php include 'link.php'; ?>
 
 </head>
-
-<body >
-
-	<script type="text/javascript">
-  $(function(){
-    $(".dropdown").hover(            
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      },
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      });
-  });  
-</script>
-
-    <nav class="navbar navbar-expand-sm bg-info navbar-dark">
-  <a id="logo" class="navbar-brand" href="home.php">Auction</a>
-  <form id="f1" class="form-inline" action="/action_page.php" method="POST">
-    <input id="inp1" class="form-control mr-sm-2" type="text" placeholder="Search product,brand or more" size="70">
-    <button id="btn1" class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
-  </form>
-  <ul class="navbar-nav">
-    <li class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        <?php echo $_SESSION['us']; ?>
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="profile.php"> Profile</a>
-        <a class="dropdown-item" href="#">Order</a>
-        <a class="dropdown-item" href="#">WishList</a>
-      <a class="dropdown-item" href="logout.php">logout</a>
-      </div>
-    </li>
-
-    <li class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        More
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#"> 24*7 help</a>
-        <a class="dropdown-item" href="#">About</a>
-        <a class="dropdown-item" href="#">Advertice</a>
-      </div>
-    </li>
-  </ul>
-</nav>
-
-
-	<div>
-    <div class = "header">
-    	<h3 style="color: white;"> Change Password </h3>
-    </div>
-		<form id="pform" class="content" method="POST" action="">
-			<?php include 'errors.php'; ?>
-			<div class = "input-group">
-				 <label> Old Password: </label>  
-				 <input type="password" name="opass">   
-			</div>
-
-			<div class = "input-group">
-				 <label> New Password: </label>  
-				 <input type="password" name="npass">  
-			</div>
-
-			<div class = "input-group">
-				 <label> Confirm password: </label>  
-				 <input type="password" name="cpass">
-			</div>
-			<div>
-				<input class="pbtn" type="submit" name="changepass" value="Change Password">
-			</div>	 	
-		</form>
+<body>
+ 
+  	<?php include 'navlog.php'; ?>
+  	<div style="max-width: 800px;" class="container">
+        <div>
+           <h3 style="border-radius: .25rem .25rem 0rem 0rem; margin-top: 80px; margin-bottom: 0px; background-color: #6c757d; text-align: center; color: white;">Change Password</h3>
+        </div>
+       <div style="margin-bottom: 20px; padding-top: 15px; padding-bottom: 15px; box-shadow: 0px 2px 3px 1px #e1e2e3; border-radius: 0rem 0rem .25rem .25rem;" class="container card">
+				<!-- inlclude msg,warn,err --> 
+	        <?php include 'msgs.php'; include 'errors.php'; include 'warnings.php'; ?>
+			<form class="content" action="" method="POST">
+				<div class="input-group mb-3">
+		            <div class="input-group-prepend">
+		    	        <span style="width: 120px;" class="input-group-text"><i style="margin-right: 5px;" class="fa fa-lock"></i>Old</span>
+	    	         	<div  class="input-group">
+					    	<input size="100" class="form-control" name="oldPassword" placeholder="Old Password" type="password">
+					    </div>
+		    	    </div>
+		        </div>
+				<div class="input-group mb-3">
+		            <div class="input-group-prepend">
+		    	        <span style="width: 120px;" class="input-group-text"><i style="margin-right: 5px;" class="fa fa-lock"></i>New</span>
+	    	         	<div  class="input-group">
+					    	<input size="100" class="form-control" name="newPassword" placeholder="New Password" type="password">
+					    </div>
+		    	    </div>
+		        </div>
+					
+				<div class="input-group mb-3">
+		            <div class="input-group-prepend">
+		    	        <span style="width: 120px;" class="input-group-text"><i style="margin-right: 5px;" class="fa fa-lock"></i>Confirm</span>
+	    	         	<div  class="input-group" id="show_hide_password">
+					    	<input size="100" class="form-control" name="password" placeholder="Confrirm Password" type="password">
+					      	<span class="input-group-text">
+					        	<a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+					      	</span>
+					    </div>
+		    	    </div>
+		        </div>
+					
+				<script type="text/javascript">
+					$	(document).ready(function() {
+				    $("#show_hide_password a").on('click', function(event) {
+				        event.preventDefault();
+				        if($('#show_hide_password input').attr("type") == "text"){
+				            $('#show_hide_password input').attr('type', 'password');
+				            $('#show_hide_password i').addClass( "fa-eye-slash" );
+				            $('#show_hide_password i').removeClass( "fa-eye" );
+				        }else if($('#show_hide_password input').attr("type") == "password"){
+				            $('#show_hide_password input').attr('type', 'text');
+				            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+				            $('#show_hide_password i').addClass( "fa-eye" );
+				        }
+				    });
+				});
+				</script>
+				<div>
+					<button style="width: 100%;" type="submit" class="btn btn-secondary" name="change_pass" value="change_pass">Change Password</button>
+				</div>
+			</form>
+		</div>
 	</div>
-			
+
+<?php include 'footer.php'; ?>
+
 </body>
 </html>

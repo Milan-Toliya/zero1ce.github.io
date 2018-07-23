@@ -1,97 +1,250 @@
-<?php
-	include 'session.php';
-?>
+<?php 
+  include 'session.php';
+ ?>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-  <title>Home OnlineAuction</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <link rel="stylesheet" type="text/css" href="css/manu.css">
-  <link rel="stylesheet" type="text/css" href="css/default.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <title>Welcome To OnlineAuction</title>
+ 
+  <?php include 'link.php'; ?>
+
+  <style type="text/css">
+    /* Make the image fully responsive */
+    .carousel-inner img {
+      width: 100%;
+      height: 280px;
+    }
+    
+  </style>
 
 </head>
 
 <body>
 
-
-<script type="text/javascript">
-  $(function(){
-    $(".dropdown").hover(            
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
-      },
-      function() {
-        $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
-        $(this).toggleClass('open');
-        $('b', this).toggleClass("caret caret-up");                
+  <script>
+    var count = 1;
+    function setColor(btn) {
+        var property = document.getElementById(btn);
+        if (count == 0) {
+          //remove item from wishcart table 
+            property.style.color = "gray";
+            count = 1;        
+        }else {
+          // add item to wishcart table
+            property.style.color = "red";
+            count = 0;
+        }
+    }
+    $(document).ready(function(){
+      $("#button").click(function(e){
+          e.preventDefault();  //add this line to prevent reload
+          if(count == 0){
+            $.ajax({type:"post", url:"addajax.php" });
+          }else{
+            $.ajax({type:"post", url:"removeajax.php" });
+          }
       });
-  });  
-</script>
+    });
+  </script>
 
+  <?php include 'navlog.php'; ?>
 
-<nav class="navbar navbar-expand-sm bg-info navbar-dark">
-  <a id="logo" class="navbar-brand" href="home.php">Auction</a>
-  <form id="f1" class="form-inline" action="/action_page.php" method="POST">
-    <input id="inp1" class="form-control mr-sm-2" type="text" placeholder="Search product,brand or more" size="70">
-    <button id="btn1" class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
-  </form>
-  <ul class="navbar-nav">
-    <li style="margin-left: 88px;" class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        <?php echo $_SESSION['us']; ?>
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="profile.php">Profile</a>
-        <a class="dropdown-item" href="auctions.php">Auctions</a>
-        <a class="dropdown-item" href="orders.php">Orders</a>
-        <a class="dropdown-item" href="wishlist.php">Wishlist</a>
-        <a class="dropdown-item" href="logout.php">logout</a>
+  <!-- top main carosel slider -->
+  <div style="margin-top:0px; padding-left: 0px; padding-right: 0px;" id="demo" class="carousel slide" data-ride="carousel">
+
+    <!-- Indicators -->
+    <ul class="carousel-indicators">
+      <li data-target="#demo" data-slide-to="0" class="active"></li>
+      <li data-target="#demo" data-slide-to="1"></li>
+      <li data-target="#demo" data-slide-to="2"></li>
+    </ul>
+
+    <!-- The slideshow -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="img1.jpg" alt="Los Angeles" width="1100" height="500">
       </div>
-    </li>
-
-    <li class="nav-item dropdown">
-      <a id="more" class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        More
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="help.php">24*7 help</a>
-        <a class="dropdown-item" href="about.php">About</a>
-        <a class="dropdown-item" href="advertice.php">Advertice</a>
+      <div class="carousel-item">
+        <img src="img2.jpg" alt="Chicago" width="1100" height="500">
       </div>
-    </li>
-  </ul>
-</nav>
-    
-  <?php 
-      $result = mysqli_query($conn, "SELECT * FROM auction");
-      echo "<table border='1'>
-      <tr>
-      <th>product name</th>
-      <th>description</th>
-      </tr>";
+      <div class="carousel-item">
+        <img src="img3.jpg" alt="New York" width="1100" height="500">
+      </div>
+    </div>
 
-      while($row = mysqli_fetch_array($result))
-      {
-      echo "<tr>";
-      echo "<td>" . $row[1] . "</td>";
-      echo "<td>" . $row[2] . "</td>";
-      echo "</tr>";
+    <!-- Left and right controls -->
+    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo" data-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </a>
+  </div>
+
+
+    <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 15px; box-shadow: 0px 0px 2px 1px #e1e2e3;" class="container card">
+      <div class="row">
+        <div class="col-6">
+          <h5><b>Electronics</b></h5>
+        </div>
+        <div class="col-6">
+          <a href="all_electronics.php"><button class="float-right btn btn-info">View All</button></a>
+        </div>
+      </div>
+    <?php  
+      $result = mysqli_query($conn, "SELECT * FROM auction where catagory = 'electronics'" );
+        echo '<div class="row">';
+        $counter =0;
+        while($row = mysqli_fetch_array($result)) {
+        $counter += 1;
+        if($counter > 4) {
+          break;
+        }
+         echo ' <div class="col-6 col-sm-3"><div class="card-body text-left">
+               <a style = "color: Black;" href="#"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
+                <div class="row"> 
+                  <div class="col-9">';
+                  echo '<b>';
+                  echo $row[1];
+                  echo '</b>';
+                  echo '</a>';
+                  echo '</div>
+                  <div class="col-3">
+                  <button style= "border: none; color:gray; background-color: white; float: right; cursor: pointer;" id="button" name="wishlist" onclick=setColor("button");><i class="fa fa-heart"></i></button>
+                  </div>
+                </div>';
+                $bp=$row[7]; $bid=$row[16]; if($bid == 0){echo "Base Price: "."$bp";}else{echo "Base Price: "."<del>$bp</del>";} ?>
+                <br/>
+                 <?php if($bid == 0){echo "Current Bid: "."0";}else{echo "Current Bid: "."$bid";}
+               echo '</div></div>';
       }
-      echo "</table>";
-  ?>
+      echo '</div>';          
+    ?>
+    </div>
+  <hr>
+   <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 15px; box-shadow: 0px 0px 2px 1px #e1e2e3;" class="container card">
+      <div class="row">
+        <div class="col-6">
+          <h5><b>Land & Propery</b></h5>
+        </div>
+        <div class="col-6">
+          <a href="all_land.php"><button class="float-right btn btn-info">View All</button></a>
+        </div>
+      </div>
+    <?php  
+      $result = mysqli_query($conn, "SELECT * FROM auction where catagory = 'land'" );
+        echo '<div class="row">';
+        $counter =0;
+        while($row = mysqli_fetch_array($result)) {
+        $counter += 1;
+        if($counter > 4) {
+          break;
+        }
+         echo ' <div class="col-6 col-sm-3"><div class="card-body text-left">
+               <a style = "color: Black;" href="#"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
+                <div class="row"> 
+                  <div class="col-9">';
+                  echo '<b>';
+                  echo $row[1];
+                  echo '</b>';
+                  echo '</a>';
+                  echo '</div>
+                  <div class="col-3">
+                  <button style= "border: none; color:gray; background-color: white; float: right; cursor: pointer;" id="button" name="wishlist" onclick=setColor("button");><i class="fa fa-heart"></i></button>
+                  </div>
+                </div>';
+                $bp=$row[7]; $bid=$row[16]; if($bid == 0){echo "Base Price: "."$bp";}else{echo "Base Price: "."<del>$bp</del>";} ?>
+                <br/>
+                 <?php if($bid == 0){echo "Current Bid: "."0";}else{echo "Current Bid: "."$bid";}
+               echo '</div></div>';
+      }
+      echo '</div>';          
+    ?>
+    </div>
+  <hr>
+   <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 15px; box-shadow: 0px 0px 2px 1px #e1e2e3;" class="container card">
+      <div class="row">
+        <div class="col-6">
+          <h5><b>Art</b></h5>
+        </div>
+        <div class="col-6">
+          <a href="all_art.php"><button class="float-right btn btn-info">View All</button></a>
+        </div>
+      </div>
+    <?php  
+      $result = mysqli_query($conn, "SELECT * FROM auction where catagory = 'art'" );
+        echo '<div class="row">';
+        $counter =0;
+        while($row = mysqli_fetch_array($result)) {
+        $counter += 1;
+        if($counter > 4) {
+          break;
+        }
+         echo ' <div class="col-6 col-sm-3"><div class="card-body text-left">
+               <a style = "color: Black;" href="#"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
+                <div class="row"> 
+                  <div class="col-9">';
+                  echo '<b>';
+                  echo $row[1];
+                  echo '</b>';
+                  echo '</a>';
+                  echo '</div>
+                  <div class="col-3">
+                  <button style= "border: none; color:gray; background-color: white; float: right; cursor: pointer;" id="button" name="wishlist" onclick=setColor("button");><i class="fa fa-heart"></i></button>
+                  </div>
+                </div>';
+                $bp=$row[7]; $bid=$row[16]; if($bid == 0){echo "Base Price: "."$bp";}else{echo "Base Price: "."<del>$bp</del>";} ?>
+                <br/>
+                 <?php if($bid == 0){echo "Current Bid: "."0";}else{echo "Current Bid: "."$bid";}
+               echo '</div></div>';
+      }
+      echo '</div>';          
+    ?>
+    </div>
+  <hr>
+   <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 15px; box-shadow: 0px 0px 2px 1px #e1e2e3;" class="container card">
+      <div class="row">
+        <div class="col-6">
+          <h5><b>Vehical</b></h5>
+        </div>
+        <div class="col-6">
+          <a href="all_vehical.php"><button class="float-right btn btn-info">View All</button></a>
+        </div>
+      </div>
+    <?php  
+      $result = mysqli_query($conn, "SELECT * FROM auction where catagory = 'vehical'" );
+        echo '<div class="row">';
+        $counter =0;
+        while($row = mysqli_fetch_array($result)) {
+        $counter += 1;
+        if($counter > 4) {
+          break;
+        }
+         echo ' <div class="col-6 col-sm-3"><div class="card-body text-left">
+               <a style = "color: Black;" href="#"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
+                <div class="row"> 
+                  <div class="col-9">';
+                  echo '<b>';
+                  echo $row[1];
+                  echo '</b>';
+                  echo '</a>';
+                  echo '</div>
+                  <div class="col-3">
+                  <button style= "border: none; color:gray; background-color: white; float: right; cursor: pointer;" id="button" name="wishlist" onclick=setColor("button");><i class="fa fa-heart"></i></button>
+                  </div>
+                </div>';
+                $bp=$row[7]; $bid=$row[16]; if($bid == 0){echo "Base Price: "."$bp";}else{echo "Base Price: "."<del>$bp</del>";} ?>
+                <br/>
+                 <?php if($bid == 0){echo "Current Bid: "."0";}else{echo "Current Bid: "."$bid";}
+               echo '</div></div>';
+      }
+      echo '</div>';          
+    ?>
+    </div>
+  <hr>
+  <?php include 'footer.php'; ?>
 
 </body>
 
 </html>
-
-

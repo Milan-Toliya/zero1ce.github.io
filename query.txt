@@ -4,3 +4,11 @@ select * from auction where now() > startDT && now < endDT;
 |select * from auction where nowDT > 08-07-2018 && nowDT < 11-07-2018;|
 |=====================================================================|
 
+
+
+E-mail:	onlineauctionindia@gmail.com
+FB:	https://www.facebook.com/auctionindia
+insta : onlineauction
+twiter: @onlineauction2
+ps: KANGAD007
+ps: KANGADS007

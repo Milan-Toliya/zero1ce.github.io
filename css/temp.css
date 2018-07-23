@@ -1,13 +1,6 @@
-#wowslider-container0 .ws_bullets div a {
-    font-size: 0;
-}
-.type-page img {
-  padding: .53em;
-  border: 1px solid #e6e6e6;
-  background: #fff;
-  max-width: 100%;
- height: auto !important;
-  display: block;
-    padding: .53em;
-  border: 1px solid #e6e6e6;
+.input-group {
+	padding: 10px;
+	max-width: 270px;
+	margin-left: auto;
+	margin-right: auto;	 
 }
