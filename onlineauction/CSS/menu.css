@@ -1,0 +1,10 @@
+.menu {
+	background-color: #2874f0;
+	margin: auto;
+	border-radius: 5px; 
+	padding: 10px;
+}
+a {
+	text-decoration: none;
+	color: white;
+}

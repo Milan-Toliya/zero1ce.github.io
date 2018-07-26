@@ -1,0 +1,9 @@
+1)Documentation of project , Definition, purpose objective , which technology and process model use is decided.
+
+2)At first we were confused which programming language use in implementation of project, we where also confused about which platform to choose(webapp or windowsapp), deciding the model for project also challenge to us then we decided to use incremental model.  
+
+3)We needed support of our Guide Shreyansh sir to choose Technology for the project.
+
+4)-wikipedia
+-google
+-some websites

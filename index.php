@@ -74,6 +74,7 @@
 
 
     <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 15px; box-shadow: 0px 0px 2px 1px #e1e2e3;" class="container card">
+     
       <div class="row">
         <div class="col-6">
           <h5><b>Electronics</b></h5>
@@ -139,11 +140,15 @@
 
         });
       });
+
+
+
+
         </script>
 
          
         <div class="col-6 col-sm-3"><div class="card-body text-left">
-               <a style = "color: Black;" href="#"><img style="max-width: 320px; height:240px;" src="auctionIMG/<?php echo $row[10]; ?>" class="rounded" alt="Cinque Terre">
+               <a style = "color: Black;" href="product.php?aidLink=<?php echo $row[0];?>"><img style="max-width: 320px; height:240px;" src="auctionIMG/<?php echo $row[10]; ?>" class="rounded" alt="Cinque Terre">
                 <div class="row"> 
                   <div class="col-9">
                   <b> <?php echo $row[1]; ?> </b>
@@ -182,6 +187,7 @@
 
 
       <div style="margin-top: 20px; margin-bottom: 20px; padding-top: 15px; box-shadow: 0px 0px 2px 1px #e1e2e3;" class="container card">
+        <form method="post" action="product.php">
       <div class="row">
         <div class="col-6">
           <h5><b>Land & Property</b></h5>
@@ -251,9 +257,9 @@
 
          
         <div class="col-6 col-sm-3"><div class="card-body text-left">
-               <a style = "color: Black;" href="#"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
                 <div class="row"> 
                   <div class="col-9">
+               <a style = "color: Black;" href="product.php?aidLink=<?php echo $row[0]; ?>"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
                   <b> <?php echo $row[1]; ?> </b>
                   </a>
                   </div>
@@ -282,7 +288,7 @@
                  <?php $bp=$row[7]; $bid=$row[16]; if($bid == 0){echo "Base Price: "."$bp";}else{echo "Base Price: "."<del>$bp</del>";} ?>
                 <br/>
                  <?php if($bid == 0){echo "Current Bid: "."0";}else{echo "Current Bid: "."$bid";} ?>
-               </div></div>
+               </div></form></div>
       <?php } ?>
       </div>          
     </div>
@@ -359,11 +365,13 @@
 
          
         <div class="col-6 col-sm-3"><div class="card-body text-left">
-               <a style = "color: Black;" href="#"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
+                <a style="color: black;" href="product.php?aidLink=<?php echo $row[0]; ?>"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
+                <input type="hidden" name="aid" value=<?php echo $row[0]; ?> >
                 <div class="row"> 
                   <div class="col-9">
                   <b> <?php echo $row[1]; ?> </b>
                   </a>
+                  
                   </div>
                   <div class="col-3">
 
@@ -467,7 +475,7 @@
 
          
         <div class="col-6 col-sm-3"><div class="card-body text-left">
-               <a style = "color: Black;" href="#"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
+               <a style = "color: Black;" href="product.php?aidLink=<?php echo $row[0]; ?>"><img src="img2.jpg" class="rounded" alt="Cinque Terre" width="100%">
                 <div class="row"> 
                   <div class="col-9">
                   <b> <?php echo $row[1]; ?> </b>

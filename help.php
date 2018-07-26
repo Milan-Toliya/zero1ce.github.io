@@ -20,7 +20,7 @@
   <p>E-Mail : skkangad555@gmail.com</p>
   <P>CALL AT YOUR OWN RISK</P>
   <HR>
-  <H1>MILAN TOLIYA : +919624952923 / +918200175990</H1>
+  <H1>MILAN TOLIYA : +919856532565 / +918965321256</H1>
   <p>E-Mail : milan.toriya@gmail.com</p>
   <P>CALL KANJI KANGAD :P</P>
   
